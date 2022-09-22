@@ -8,9 +8,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CalculadoraComponent implements OnInit {
 
+  private numero1: string;
+  private numero2: string;
+  private operacao: string;
+  private resultado: number;
+
   constructor(private calculadoraService: CalculadoraService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.limpar();
+  }
+
+  limpar():void {
+    this.numero1 = '0';
+    this.numero2 = null;
+    this.operacao = null;
+    this.resultado = null;
+  }
+
+  adicionaNumero(numero: string): void {
+    if(this.operacao === null){
+      this.numero1 = this.concatenarNumero(this.numero1, numero);
+    }else {
+      this.numero2 = this.concatenarNumero(this.numero2, numero);
+    }
   }
 
 }
