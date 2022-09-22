@@ -34,4 +34,64 @@ export class CalculadoraComponent implements OnInit {
     }
   }
 
+  concatenarNumero(numAtual: string, numConcat: string): string {
+    //caso contenha apenas '0' ou null, reinicia o valor
+    if (numAtual === '0' || numAtual === null){
+      numAtual = '';
+    }
+    // se o primeiro digito for '.' concatena o 0 antes do ponto
+    if(numConcat === '.' && numAtual === ''){
+      return '0.';
+    }
+    // caso o '.' for digitado e ja tenha '.' apenas retorna um
+    if(numConcat === '.' && numAtual.indexOf('.') > -1){
+      return numAtual;
+    }
+    return numAtual + numConcat;
+  }
+
+  definirOperacao(operacao: string): void {
+    //apenas define a operação caso naõ exista uma
+    if(this.operacao === null){
+      this.operacao = operacao;
+      return;
+    }
+    /*caso a operação esteja definida e o numero 2 selecionado,
+    efetua a operação */
+    if(this.numero2 !== null){
+      this.resultado = this.calculadoraService.calcular(
+        parseFloat(this.numero1),
+        parseFloat(this.numero2),
+        this.operacao);
+      this.operacao =operacao;
+      this.numero1 = this.resultado.toString();
+      this.numero2 = null;
+      this.resultado = null;
+    }
+
+  }
+  //efetua o calculo da operação
+  calcular(): void{
+    if(this.numero2 === null) {
+      return;
+    };
+    this.resultado = this.calculadoraService.calcular(
+      parseFloat(this.numero1),
+      parseFloat(this.numero2),
+      this.operacao);
+  }
+
+  //retorna o valor no display
+  get display(): string {
+    if(this.resultado !== null){
+      return this.resultado.toString();
+    }
+    if (this.numero2 !== null){
+      return this.numero2;
+    }
+    return this.numero1;
+  }
+
 }
+
+
